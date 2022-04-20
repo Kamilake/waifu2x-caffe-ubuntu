@@ -1,6 +1,11 @@
-FROM nvidia/cuda:11.4.0-cudnn8-runtime-ubuntu20.04
-ARG SM = 86
-RUN apt update && apt install -y   libboost-system-dev libboost-filesystem-dev libboost-thread-dev libopenblas-dev libboost-iostreams-dev libopenblas-dev
+FROM nvidia/cuda:11.4.0-cudnn8-devel-ubuntu20.04
+ARG SM=86
+RUN apt update
+RUN export DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true && apt install tzdata && echo "tzdata tzdata/Areas select Asia"> /tmp/preseed.txt && \
+ echo "tzdata tzdata/Zones/Asia select Shanghai">> /tmp/preseed.txt && debconf-set-selections /tmp/preseed.txt && dpkg-reconfigure tzdata && rm /tmp/*.txt
+RUN apt install -y   libboost-system-dev libboost-filesystem-dev libboost-thread-dev libopenblas-dev libboost-iostreams-dev libopenblas-dev libhdf5-dev
+RUN apt install -y git build-essential cmake pkg-config libprotobuf-dev libleveldb-dev libsnappy-dev libopencv-dev libhdf5-serial-dev
+RUN apt install -y protobuf-compiler libgflags-dev libgoogle-glog-dev liblmdb-dev && apt clean
 RUN git clone -b waifu2x-caffe-ubuntu https://github.com/kisaragychihaya/caffe /usr/src/lltcggie-caffe && \
   cd /usr/src/lltcggie-caffe && \
   cp Makefile.config.example-ubuntu Makefile.config && \
