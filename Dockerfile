@@ -9,7 +9,7 @@ RUN git clone -b waifu2x-caffe-ubuntu https://github.com/kisaragychihaya/caffe /
   cd /usr/src/lltcggie-caffe && \
   cp Makefile.config.example-ubuntu Makefile.config && \
   sed -i 's/compute_35,code=sm_35/compute_61,code=sm_61/' Makefile.config && \
-  sed -i "s/compute_50,code=sm_50/compute_75,code=sm_75 -gencode arch=compute_$SM,code=sm_$SM/" Makefile.config && \
+  sed -i "s/compute_50,code=sm_50/compute_75,code=sm_75 -gencode arch=compute_61,code=sm_61 -gencode arch=compute_75,code=sm_75/" Makefile.config && \
   sed -i "s/-gencode arch=compute_50,code=compute_50/-gencode arch=compute_$SM,code=compute_$SM/" Makefile.config  && \
   make -j$(nproc)
 RUN git clone -b ubuntu https://github.com/nagadomi/waifu2x-caffe.git /usr/src/waifu2x-caffe && \
