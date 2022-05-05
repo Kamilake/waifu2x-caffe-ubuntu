@@ -1,5 +1,12 @@
 # Build on Ubuntu 16.04
 
+## Install deps
+```
+apt install libboost-system-dev libboost-filesystem-dev libboost-thread-dev libopenblas-dev libboost-iostreams-dev libopenblas-dev libhdf5-dev \
+git build-essential cmake pkg-config libprotobuf-dev libleveldb-dev libsnappy-dev libopencv-dev libhdf5-serial-dev \
+protobuf-compiler libgflags-dev libgoogle-glog-dev liblmdb-dev 
+```
+
 ## Build caffe for waifu2x-caffe
 
 ```
