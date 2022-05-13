@@ -17,7 +17,8 @@ RUN git clone -b ubuntu https://github.com/nagadomi/waifu2x-caffe.git /usr/src/w
   git submodule update --init --recursive && \
   ln -s ../lltcggie-caffe ./caffe && \
   ln -s ../lltcggie-caffe ./libcaffe
-RUN apt install -y wget libssl-dev && apt clean && wget -O /tmp/cmake.tar.gz https://github.com/Kitware/CMake/releases/download/v3.22.4/cmake-3.22.4.tar.gz
+ADD https://github.com/Kitware/CMake/releases/download/v3.22.4/cmake-3.22.4-linux-x86_64.sh /tmp/cmake-3.22.4-linux-x86_64.sh
+RUN bash /tmp/cmake-3.22.4-linux-x86_64.sh --skip-license && rm /tmp/cmake-3.22.4-linux-x86_64.sh
 RUN cd /tmp && tar xzf cmake.tar.gz && cd cmake-3.22.4 && ./bootstrap &&  make -j$(nproc) && make install && cd .. && rm -rf cmake*
 RUN cd /usr/src/waifu2x-caffe && ls -lh && rm -fr build && \
   mkdir build && cd build && apt-get install -y libatlas-base-dev && apt clean&& \
