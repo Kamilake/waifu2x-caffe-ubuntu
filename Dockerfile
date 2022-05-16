@@ -5,12 +5,9 @@ RUN export DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true && \
  apt install -y   libboost-system-dev libboost-filesystem-dev libboost-thread-dev libopenblas-dev libboost-iostreams-dev libopenblas-dev libhdf5-dev \
   git build-essential cmake pkg-config libprotobuf-dev libleveldb-dev libsnappy-dev libopencv-dev libhdf5-serial-dev \
  protobuf-compiler libgflags-dev libgoogle-glog-dev liblmdb-dev && apt clean
-RUN git clone -b waifu2x-caffe-ubuntu https://github.com/kisaragychihaya/caffe /usr/src/lltcggie-caffe && \
+RUN git clone -b waifu2x-caffe-ubuntu https://github.com/nagadomi/caffe.git /usr/src/lltcggie-caffe && \
   cd /usr/src/lltcggie-caffe && \
   cp Makefile.config.example-ubuntu Makefile.config && \
-  sed -i 's/compute_35,code=sm_35/compute_60,code=sm_60 -gencode arch=compute_86,code=sm_86/' Makefile.config && \
-  sed -i "s/compute_50,code=sm_50/compute_70,code=sm_70  -gencode arch=compute_75,code=sm_75 -gencode arch=compute_61,code=sm_61/" Makefile.config && \
-  sed -i "s/-gencode arch=compute_50,code=compute_50/-gencode arch=compute_52,code=sm_52 -gencode arch=compute_80,code=sm_80/" Makefile.config &&\
   make -j$(nproc)
 RUN git clone -b ubuntu https://github.com/nagadomi/waifu2x-caffe.git /usr/src/waifu2x-caffe && \
   cd /usr/src/waifu2x-caffe && \
