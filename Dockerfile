@@ -1,4 +1,4 @@
-FROM nvidia/cuda:11.4.0-cudnn8-devel-ubuntu18.04
+FROM nvidia/cuda:11.4.0-cudnn8-devel-ubuntu20.04
 RUN apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/3bf863cc.pub
 RUN apt update
 RUN export DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true && \
@@ -14,8 +14,7 @@ RUN git clone -b ubuntu https://github.com/nagadomi/waifu2x-caffe.git /usr/src/w
   git submodule update --init --recursive && \
   ln -s ../lltcggie-caffe ./caffe && \
   ln -s ../lltcggie-caffe ./libcaffe
-RUN apt install -y wget libssl-dev && apt clean && wget -O /tmp/cmake.tar.gz https://github.com/Kitware/CMake/releases/download/v3.22.4/cmake-3.22.4.tar.gz
-RUN cd /tmp && tar xzf cmake.tar.gz && cd cmake-3.22.4 && ./bootstrap &&  make -j$(nproc) && make install && cd .. && rm -rf cmake*
+RUN apt install -y cmake && apt clean
 RUN cd /usr/src/waifu2x-caffe && ls -lh && rm -fr build && \
   mkdir build && cd build && apt-get install -y libatlas-base-dev && apt clean&& \
   cmake .. -DCUDA_NVCC_FLAGS="-D_FORCE_INLINES -gencode arch=compute_52,code=sm_52 -gencode arch=compute_60,code=sm_60 \
@@ -27,3 +26,4 @@ RUN cd /usr/src/waifu2x-caffe/build && mv waifu2x-caffe /usr/local/bin/waifu2x-c
   mkdir -p /opt/libcaffe && mv libcaffe/lib/* /opt/libcaffe/ && echo /opt/libcaffe/ > /etc/ld.so.conf.d/caffe.conf && \
   ldconfig && cd .. && mv bin ../waifu2x && rm -rf /usr/src/waifu2x-caffe && rm -rf /usr/src/lltcggie-caffe && apt clean
 RUN waifu2x-caffe --help
+WORKDIR /usr/src/waifu2x
